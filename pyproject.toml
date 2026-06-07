@@ -13,7 +13,12 @@ dependencies = [
     "sqlalchemy>=2.0.49",        # ORM/engine de conexao — executa SQL e faz bulk insert
 ]
 
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
 [dependency-groups]
 dev = [
     "apache-airflow-core>=3.2.0", # so pro editor resolver imports — Airflow roda no Docker
+    "pytest>=8.0",
+    "ruff>=0.11",
 ]
