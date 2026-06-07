@@ -1,0 +1,50 @@
+# esse workflow roda automaticamente toda vez que alguem faz push ou
+# abre um PR na main. se algum step falhar, o github
+# mostra um X vermelho no commit, ninguem mergea sem estar verde
+
+name: CI
+
+# "on" define o gatilho quando esse workflow dispara
+# push: roda quando codigo chega no main (merge ou push direto)
+# pull_request: roda quando alguem abre ou atualiza um PR pro main
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    # o github cria uma maquina virtual temporaria so pra rodar isso
+    # quando termina, a maquina é destruida
+    runs-on: ubuntu-latest
+
+    # steps rodam em sequencia. se um falhar, os seguintes nao executam
+    steps:
+      # clona o repositorio na maquina virtual
+      # sem isso, os steps seguintes nao tem acesso ao codigo
+      - uses: actions/checkout@v4
+
+      # instala python 3.13 (mesma versao que usei local)
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # instala o uv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      # instala todas as dependencias do pyproject.toml, incluindo
+      # as de dev (pytest, ruff). é o equivalente de rodar "uv sync" local
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      # o ruff verifica estilo e erros comuns no codigo (f-strings vazias,
+      # imports nao usados, etc). se achar algo, o workflow falha aqui
+      - name: Lint
+        run: uv run ruff check src/ tests/
+
+      # roda os 27 testes do transform. o -v mostra cada teste por nome
+      # no log do git, o que facilita achar qual quebrou
+      - name: Tests
+        run: uv run pytest tests/ -v
