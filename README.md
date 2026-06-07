@@ -1,5 +1,7 @@
 # ETL pipeline - Australian road crash data
 
+![CI](https://github.com/hlcbump/etl-crash-pipeline/actions/workflows/ci.yml/badge.svg)
+
 Reads raw crash data from an Excel file (~6,900 rows in a single flat table), cleans it up and normalizes it into 6 relational tables, then loads everything into PostgreSQL with proper constraints. Orchestrated by Apache Airflow running in Docker.
 
 ## Architecture
