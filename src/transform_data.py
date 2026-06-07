@@ -23,7 +23,7 @@ def create_dataframe (path_name: str) -> pd.DataFrame:
 def clean_speed_limit(df) -> pd.DataFrame:
     df['Speed Limit'] = pd.to_numeric(df['Speed Limit'], errors='coerce')
 
-    logging.info(f"\n→ Coluna Speed Limit normalizada")
+    logging.info("\n→ Coluna Speed Limit normalizada")
 
     return df
 
@@ -31,7 +31,7 @@ def clean_speed_limit(df) -> pd.DataFrame:
 def clean_road_type(df) -> pd.DataFrame:
     df['National Road Type'] = df['National Road Type'].str.title()
 
-    logging.info(f"\n→ Coluna National Road Type normalizada")
+    logging.info("\n→ Coluna National Road Type normalizada")
 
     return df
 
@@ -39,7 +39,7 @@ def clean_road_type(df) -> pd.DataFrame:
 def clean_remoteness(df) -> pd.DataFrame:
     df['National Remoteness Areas'] = df['National Remoteness Areas'].str.replace("não registrado", "Not Registered")
 
-    logging.info(f"\n→ Coluna National Remoteness Areas normalizada")
+    logging.info("\n→ Coluna National Remoteness Areas normalizada")
 
     return df
 
